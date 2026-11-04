@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { @apply bg-white text-neutral-800 antialiased; font-family: 'DM Sans', system-ui, sans-serif; }
+h1, h2, h3 { font-family: 'Bricolage Grotesque', system-ui, sans-serif; letter-spacing: -0.01em; }
+:focus-visible { outline: 3px solid #F58220; outline-offset: 2px; }
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center rounded-xl px-5 py-3 font-bold transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-red { @apply btn bg-brand-red text-white hover:bg-brand-deep; }
+  .btn-white { @apply btn bg-white text-brand-red hover:bg-brand-soft; }
+  .btn-outline { @apply btn border-2 border-brand-red text-brand-red hover:bg-brand-soft; }
+  .input { @apply w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-base focus:border-brand-red focus:outline-none; }
+  .chip { @apply rounded-full border-2 border-neutral-200 px-4 py-2 text-sm font-bold transition; }
+  .chip-on { @apply border-brand-red bg-brand-red text-white; }
+}
