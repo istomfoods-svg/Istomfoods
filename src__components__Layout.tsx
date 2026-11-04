@@ -13,11 +13,17 @@ const links: [string, string][] = [
 ]
 
 function Logo() {
+  // Shows /logo.png if it exists, otherwise falls back to the letter badge
+  const [noImage, setNoImage] = useState(false)
   return (
     <Link to="/" className="flex items-center gap-2" aria-label="Istom Foods home">
-      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-red font-display text-xl font-extrabold text-white">
-        I<span className="text-brand-orange">F</span>
-      </span>
+      {noImage ? (
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-red font-display text-xl font-extrabold text-white">
+          I<span className="text-brand-orange">F</span>
+        </span>
+      ) : (
+        <img src="/logo.png" alt="Istom Foods logo" className="h-10 w-10 rounded-xl object-contain" onError={() => setNoImage(true)} />
+      )}
       <span className="leading-tight">
         <span className="block font-display text-lg font-extrabold text-brand-red">Istom Foods</span>
         <span className="block text-xs text-neutral-500">Feeding the Nation</span>
