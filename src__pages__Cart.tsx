@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import ProductImage from '../components/ProductImage'
 import { lineKg, lineTotal, useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
-import { fmtKg, naira } from '../lib/format'
+import { feeText, fmtKg, naira } from '../lib/format'
 
 export default function Cart() {
   const { items, subtotal, setQty, remove } = useCart()
@@ -48,7 +48,7 @@ export default function Cart() {
 
       <div className="mt-6 space-y-2 rounded-2xl bg-brand-soft p-4">
         <div className="flex justify-between"><span>Subtotal</span><span className="font-bold">{naira(subtotal)}</span></div>
-        <div className="flex justify-between"><span>Delivery fee</span><span className="font-bold">{naira(deliveryFee)}</span></div>
+        <div className="flex justify-between"><span>Delivery fee</span><span className="font-bold">{feeText(deliveryFee)}</span></div>
         <div className="flex justify-between border-t border-brand-orange/40 pt-2 text-lg"><span className="font-bold">Total</span><span className="font-extrabold text-brand-red">{naira(subtotal + deliveryFee)}</span></div>
       </div>
       <Link to="/checkout" className="btn-red mt-4 w-full text-lg">Go to checkout</Link>

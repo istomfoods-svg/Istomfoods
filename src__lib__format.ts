@@ -14,3 +14,5 @@ export const statusLabel: Record<string, string> = {
   delivered: 'Delivered',
   cancelled: 'Cancelled',
 }
+
+export const feeText = (n: number) => (n === 0 ? 'Free' : naira(n))

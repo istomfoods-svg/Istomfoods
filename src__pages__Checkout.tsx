@@ -1,8 +1,9 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { lineKg, lineTotal, useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
-import { fmtKg, naira } from '../lib/format'
+import { feeText, fmtKg, naira } from '../lib/format'
 import { supabase } from '../lib/supabase'
 
 interface Form {
@@ -20,6 +21,11 @@ export default function Checkout() {
   const [errors, setErrors] = useState<Errors>({})
   const [busy, setBusy] = useState(false)
   const [serverError, setServerError] = useState('')
+  const { user } = useAuth()
+
+  useEffect(() => {
+    if (user) setF((p) => ({ ...p, name: p.name || ((user.user_metadata?.full_name as string) ?? ''), phone: p.phone || ((user.user_metadata?.phone as string) ?? '') }))
+  }, [user])
 
   if (items.length === 0) {
     return (
@@ -80,6 +86,9 @@ export default function Checkout() {
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-8 md:grid-cols-5">
       <form onSubmit={submit} className="space-y-4 md:col-span-3" noValidate>
         <h1 className="text-3xl font-bold">Checkout</h1>
+        {!user && (
+          <p className="rounded-xl bg-brand-soft p-3 text-sm">Want to track this order? <Link to="/account" className="font-bold text-brand-red underline">Sign in or create an account</Link> first. Your cart stays saved.</p>
+        )}
         {field('name', 'Full name', { autoComplete: 'name' })}
         {field('phone', 'Phone number', { type: 'tel', inputMode: 'tel', autoComplete: 'tel', placeholder: '08012345678' })}
         {field('email', 'Email address (optional)', { type: 'email', autoComplete: 'email' })}
@@ -115,7 +124,7 @@ export default function Checkout() {
           </ul>
           <div className="space-y-1 border-t pt-3">
             <div className="flex justify-between"><span>Subtotal</span><span>{naira(subtotal)}</span></div>
-            <div className="flex justify-between"><span>Delivery fee</span><span>{naira(deliveryFee)}</span></div>
+            <div className="flex justify-between"><span>Delivery fee</span><span>{feeText(deliveryFee)}</span></div>
             <div className="flex justify-between text-lg font-extrabold text-brand-red"><span>Total</span><span>{naira(subtotal + deliveryFee)}</span></div>
           </div>
         </div>

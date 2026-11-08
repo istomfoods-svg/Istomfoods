@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
+import Account from './pages/Account'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Contact from './pages/Contact'
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="cart" element={<Cart />} />
         <Route path="checkout" element={<Checkout />} />
         <Route path="payment-complete" element={<PaymentComplete />} />
+        <Route path="account" element={<Account />} />
         <Route path="my-orders" element={<MyOrders />} />
         <Route path="contact" element={<Contact />} />
         <Route path="*" element={<Navigate to="/" replace />} />

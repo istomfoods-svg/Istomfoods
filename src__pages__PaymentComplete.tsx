@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
 import { naira, waLink } from '../lib/format'
@@ -12,6 +13,7 @@ export default function PaymentComplete() {
   const reference = (params.get('reference') ?? params.get('trxref') ?? '').toUpperCase()
   const { clear } = useCart()
   const { whatsapp } = useSettings()
+  const { user } = useAuth()
   const [state, setState] = useState<State>('checking')
   const [total, setTotal] = useState(0)
 
@@ -60,7 +62,7 @@ export default function PaymentComplete() {
             <p className="mt-1 text-sm text-neutral-600">Save this ID. You need it to track your order.</p>
           </div>
           <a href={help} target="_blank" rel="noreferrer" className="btn mt-6 w-full bg-green-600 text-white hover:bg-green-700">Message us on WhatsApp with this order ID</a>
-          <Link to="/my-orders" className="btn-outline mt-3 w-full">Track my order</Link>
+          <Link to={user ? '/account' : '/my-orders'} className="btn-outline mt-3 w-full">Track my order</Link>
         </>
       )}
 

@@ -8,7 +8,7 @@ const links: [string, string][] = [
   ['/', 'Home'],
   ['/shop', 'Shop'],
   ['/student-bites', 'Student Bites'],
-  ['/my-orders', 'My Orders'],
+  ['/account', 'My Orders'],
   ['/contact', 'Contact'],
 ]
 

@@ -16,3 +16,24 @@ h1, h2, h3 { font-family: 'Bricolage Grotesque', system-ui, sans-serif; letter-s
   .chip { @apply rounded-full border-2 border-neutral-200 px-4 py-2 text-sm font-bold transition; }
   .chip-on { @apply border-brand-red bg-brand-red text-white; }
 }
+
+/* ---------- Motion (Apple-style: slow ease-out, small distances) ---------- */
+.reveal { opacity: 0; transform: translateY(36px) scale(0.985); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); will-change: opacity, transform; }
+.reveal.in { opacity: 1; transform: none; }
+@keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+.rise { animation: rise 1s cubic-bezier(.16,1,.3,1) both; }
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+.floaty { animation: floaty 6s ease-in-out infinite; }
+@keyframes drift { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(24px, -28px); } }
+.drift { animation: drift 14s ease-in-out infinite; }
+
+.cut { cursor: pointer; outline: none; }
+.cut path { fill: #C8102E; stroke: rgba(255,255,255,.35); stroke-width: 2; transition: fill .35s ease; }
+.cut:hover path, .cut:focus-visible path, .cut.on path { fill: #F58220; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .rise, .floaty, .drift { animation: none; }
+  .cowsvg * { transition: none !important; }
+}
