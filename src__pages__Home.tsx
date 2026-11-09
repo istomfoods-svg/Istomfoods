@@ -20,19 +20,20 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-red via-brand-red to-brand-orange text-white">
-        <div className="drift pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
-        <div className="drift pointer-events-none absolute -bottom-32 left-1/4 h-96 w-96 rounded-full bg-black/10 blur-3xl" style={{ animationDelay: '-7s' }} />
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-36">
+      <section className="relative isolate flex min-h-[36rem] items-end overflow-hidden bg-[#10191f] text-white md:min-h-[40rem] md:items-center">
+        <img src="/hero.jpg" alt="" aria-hidden="true"
+          className="hero-photo absolute inset-0 -z-20 h-full w-full object-cover object-[50%_30%] md:left-auto md:right-0 md:w-[55%]" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/45 to-black/20 md:bg-gradient-to-r md:from-[#10191f] md:via-[#10191f]/60 md:to-transparent" />
+        <div className="relative mx-auto w-full max-w-6xl px-4 pb-14 pt-24 md:py-32">
           {free && <p className="rise inline-block rounded-full bg-white/15 px-4 py-1 text-sm font-bold backdrop-blur">Free delivery on every order</p>}
-          <h1 className="rise mt-5 max-w-4xl text-5xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl md:text-8xl" style={{ animationDelay: '120ms' }}>
+          <h1 className="rise mt-5 max-w-2xl text-5xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl md:text-7xl" style={{ animationDelay: '120ms' }}>
             Fresh Meat, Delivered to Your Doorstep.
           </h1>
           <p className="rise mt-6 max-w-xl text-lg text-white/90 md:text-xl" style={{ animationDelay: '260ms' }}>
             Order fresh beef and assorted meat from Istom Foods. Convenient, affordable, and delivered to you.
           </p>
           <div className="rise mt-10 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: '400ms' }}>
-            <Link to="/shop" className="btn-white text-lg">Order Now</Link>
+            <Link to="/shop" className="btn-red text-lg">Order Now</Link>
             <Link to="/student-bites" className="btn border-2 border-white text-white hover:bg-white/10">Student Bites from {naira(s.smallMin)}</Link>
           </div>
         </div>

@@ -37,3 +37,11 @@ h1, h2, h3 { font-family: 'Bricolage Grotesque', system-ui, sans-serif; letter-s
   .rise, .floaty, .drift { animation: none; }
   .cowsvg * { transition: none !important; }
 }
+
+/* Hero photo fades into the dark background on wide screens */
+@media (min-width: 768px) {
+  .hero-photo {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 38%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 38%);
+  }
+}
