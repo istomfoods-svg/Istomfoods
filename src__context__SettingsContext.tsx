@@ -8,6 +8,9 @@ const defaults: Settings = {
   smallMin: 1500,
   smallStep: 500,
   deliveryArea: 'Ado-Ekiti',
+  bankName: '',
+  bankNumber: '',
+  bankAccountName: '',
 }
 
 const Ctx = createContext<Settings>(defaults)
@@ -30,6 +33,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
           smallMin: Number(m.small_portion_min ?? defaults.smallMin),
           smallStep: Number(m.small_portion_step ?? defaults.smallStep),
           deliveryArea: m.delivery_area ?? defaults.deliveryArea,
+          bankName: (m.bank_name ?? '').trim(),
+          bankNumber: (m.bank_account_number ?? '').trim(),
+          bankAccountName: (m.bank_account_name ?? '').trim(),
         })
       })
   }, [])

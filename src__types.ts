@@ -26,4 +26,7 @@ export interface Settings {
   smallMin: number
   smallStep: number
   deliveryArea: string
+  bankName: string
+  bankNumber: string
+  bankAccountName: string
 }

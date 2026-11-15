@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { lineKg, lineTotal, useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
@@ -11,17 +11,21 @@ interface Form {
   university: string; address: string; instructions: string
 }
 type Errors = Partial<Record<keyof Form, string>>
+type Method = 'paystack' | 'bank_transfer'
 
 const phoneOk = (p: string) => /^(\+?234|0)[789][01]\d{8}$/.test(p.replace(/[\s-]/g, ''))
 
 export default function Checkout() {
-  const { items, subtotal } = useCart()
-  const { deliveryFee, whatsapp } = useSettings()
+  const { items, subtotal, clear } = useCart()
+  const { deliveryFee, whatsapp, bankName, bankNumber, bankAccountName } = useSettings()
+  const navigate = useNavigate()
   const [f, setF] = useState<Form>({ name: '', phone: '', email: '', university: 'EKSU, Ado-Ekiti', address: '', instructions: '' })
   const [errors, setErrors] = useState<Errors>({})
   const [busy, setBusy] = useState(false)
   const [serverError, setServerError] = useState('')
+  const [method, setMethod] = useState<Method>('paystack')
   const { user } = useAuth()
+  const canTransfer = Boolean(bankName && bankNumber && bankAccountName)
 
   useEffect(() => {
     if (user) setF((p) => ({ ...p, name: p.name || ((user.user_metadata?.full_name as string) ?? ''), phone: p.phone || ((user.user_metadata?.phone as string) ?? '') }))
@@ -57,7 +61,7 @@ export default function Checkout() {
 
     setBusy(true)
     // The server recalculates all prices. Nothing here decides what the customer pays.
-    const { data, error } = await supabase.functions.invoke('create-order', {
+    const { data, error } = await supabase.functions.invoke(method === 'bank_transfer' ? 'create-transfer-order' : 'create-order', {
       body: {
         customer: { name: f.name.trim(), phone: f.phone.replace(/[\s-]/g, ''), email: f.email.trim() || null,
           university: f.university.trim(), address: f.address.trim(), instructions: f.instructions.trim() || null },
@@ -66,11 +70,22 @@ export default function Checkout() {
     })
     setBusy(false)
 
-    if (error || !data?.authorization_url) {
-      setServerError('We could not start your payment. Please try again, or message us on WhatsApp.')
+    if (error || !data?.reference) {
+      setServerError('We could not place your order. Please try again, or message us on WhatsApp.')
       return
     }
     try { localStorage.setItem('istom-last-order', data.reference) } catch { /* ignore */ }
+
+    if (method === 'bank_transfer') {
+      try { localStorage.setItem('istom-transfer', JSON.stringify({ reference: data.reference, total: data.total, bank: data.bank })) } catch { /* ignore */ }
+      navigate('/transfer')
+      clear()
+      return
+    }
+    if (!data.authorization_url) {
+      setServerError('We could not start your payment. Please try again, or message us on WhatsApp.')
+      return
+    }
     window.location.href = data.authorization_url as string
   }
 
@@ -81,6 +96,15 @@ export default function Checkout() {
       {errors[k] && <p className="mt-1 text-sm text-red-600">{errors[k]}</p>}
     </div>
   )
+
+  const option = (m: Method, title: string, text: string) => (
+    <label className={`flex cursor-pointer gap-3 rounded-xl border-2 p-3 ${method === m ? 'border-brand-red bg-brand-soft' : 'border-neutral-200'}`}>
+      <input type="radio" name="method" className="mt-1" checked={method === m} onChange={() => setMethod(m)} />
+      <span><span className="block font-bold">{title}</span><span className="block text-sm text-neutral-600">{text}</span></span>
+    </label>
+  )
+
+  const total = subtotal + deliveryFee
 
   return (
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-8 md:grid-cols-5">
@@ -98,17 +122,20 @@ export default function Checkout() {
           <label htmlFor="instructions" className="mb-1 block text-sm font-medium">Delivery instructions (optional)</label>
           <textarea id="instructions" rows={3} value={f.instructions} onChange={set('instructions')} className="input" />
         </div>
-        <div className="rounded-xl bg-brand-soft p-3 text-sm">
-          <p className="font-bold">Payment method</p>
-          <p>Pay online with Paystack: card, bank transfer or USSD. You will be taken to a secure Paystack page.</p>
-        </div>
+
+        <fieldset className="space-y-2">
+          <legend className="mb-1 text-sm font-medium">Payment method</legend>
+          {option('paystack', 'Pay online', 'Card, bank transfer or USSD through Paystack. Confirmed instantly.')}
+          {canTransfer && option('bank_transfer', 'Direct bank transfer', 'Send the money to our bank account. We confirm it and start your order.')}
+        </fieldset>
+
         {serverError && (
           <p role="alert" className="rounded-xl bg-red-50 p-3 text-red-700">
             {serverError} <a className="font-bold underline" href={`https://wa.me/${whatsapp}`} target="_blank" rel="noreferrer">Open WhatsApp</a>
           </p>
         )}
         <button type="submit" disabled={busy} className="btn-red w-full text-lg">
-          {busy ? 'Starting payment...' : `Pay ${naira(subtotal + deliveryFee)}`}
+          {busy ? 'Please wait...' : method === 'bank_transfer' ? `Place order, pay ${naira(total)} by transfer` : `Pay ${naira(total)}`}
         </button>
       </form>
 
@@ -125,7 +152,7 @@ export default function Checkout() {
           <div className="space-y-1 border-t pt-3">
             <div className="flex justify-between"><span>Subtotal</span><span>{naira(subtotal)}</span></div>
             <div className="flex justify-between"><span>Delivery fee</span><span>{feeText(deliveryFee)}</span></div>
-            <div className="flex justify-between text-lg font-extrabold text-brand-red"><span>Total</span><span>{naira(subtotal + deliveryFee)}</span></div>
+            <div className="flex justify-between text-lg font-extrabold text-brand-red"><span>Total</span><span>{naira(total)}</span></div>
           </div>
         </div>
       </aside>
