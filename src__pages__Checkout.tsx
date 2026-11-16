@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import CutoffNotice from '../components/CutoffNotice'
 import { useAuth } from '../context/AuthContext'
 import { lineKg, lineTotal, useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
@@ -122,6 +123,8 @@ export default function Checkout() {
           <label htmlFor="instructions" className="mb-1 block text-sm font-medium">Delivery instructions (optional)</label>
           <textarea id="instructions" rows={3} value={f.instructions} onChange={set('instructions')} className="input" />
         </div>
+
+        {items.some((i) => /assorted/i.test(i.name)) && <CutoffNotice compact />}
 
         <fieldset className="space-y-2">
           <legend className="mb-1 text-sm font-medium">Payment method</legend>

@@ -22,7 +22,7 @@ function Logo() {
           I<span className="text-brand-orange">F</span>
         </span>
       ) : (
-        <img src="/logo.png" alt="Istom Foods logo" className="h-10 w-10 rounded-xl object-contain" onError={() => setNoImage(true)} />
+        <img src="/logo.png" alt="Istom Foods logo" className="h-11 w-11 rounded-full bg-white object-cover" onError={() => setNoImage(true)} />
       )}
       <span className="leading-tight">
         <span className="block font-display text-lg font-extrabold text-brand-red">Istom Foods</span>
@@ -44,7 +44,8 @@ export default function Layout() {
     `rounded-lg px-3 py-2 font-medium ${isActive ? 'bg-brand-soft text-brand-red' : 'text-neutral-700 hover:text-brand-red'}`
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="theme-meat flex min-h-screen flex-col">
+      <div className="meat-bg" aria-hidden="true"><span className="blob b1" /><span className="blob b2" /><span className="blob b3" /></div>
       <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <Logo />
@@ -67,7 +68,7 @@ export default function Layout() {
         )}
       </header>
 
-      <main className="flex-1"><Outlet /></main>
+      <main className="flex-1"><div key={pathname} className="page-enter"><Outlet /></div></main>
 
       <footer className="bg-neutral-900 py-8 text-neutral-300">
         <div className="mx-auto max-w-6xl space-y-2 px-4 text-sm">

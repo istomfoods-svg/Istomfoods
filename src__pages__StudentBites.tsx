@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import CutoffNotice from '../components/CutoffNotice'
 import ProductImage from '../components/ProductImage'
 import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
@@ -69,6 +70,7 @@ export default function StudentBites() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-3xl font-bold">Student Bites</h1>
       <p className="mt-1 text-neutral-600">Small portions of assorted meat, starting from {naira(smallMin)}. Pick an amount and we work out the weight.</p>
+      <div className="mt-4"><CutoffNotice /></div>
       {loading && <p className="mt-6 text-neutral-500">Loading...</p>}
       {error && <p className="mt-6 rounded-xl bg-red-50 p-4 text-red-700">{error}</p>}
       {!loading && !error && list.length === 0 && <p className="mt-6 text-neutral-500">Small portions are not available right now.</p>}

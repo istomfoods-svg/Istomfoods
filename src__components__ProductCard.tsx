@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { naira } from '../lib/format'
 import type { Product } from '../types'
+import CutoffNotice from './CutoffNotice'
 import ProductImage from './ProductImage'
 
 const PRESETS = [0.5, 1, 1.5, 2]
@@ -28,7 +29,7 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
+    <article className="card-lift overflow-hidden rounded-3xl border border-neutral-200 bg-white">
       <div className="aspect-[4/3]"><ProductImage url={product.image_url} name={product.name} /></div>
       <div className="space-y-4 p-4">
         <div>
@@ -54,6 +55,8 @@ export default function ProductCard({ product }: { product: Product }) {
           <span className="text-sm text-neutral-600">Total</span>
           <span className="text-lg font-bold">{valid ? naira(qty * product.price_per_kg) : '-'}</span>
         </div>
+
+        {/assorted/i.test(product.name) && <CutoffNotice compact />}
 
         <button type="button" onClick={addToCart} disabled={!valid} className="btn-red w-full">
           {added ? 'Added to cart' : 'Add to cart'}

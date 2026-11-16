@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import CutoffNotice from '../components/CutoffNotice'
 import ProductImage from '../components/ProductImage'
 import { lineKg, lineTotal, useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
@@ -7,6 +8,7 @@ import { feeText, fmtKg, naira } from '../lib/format'
 export default function Cart() {
   const { items, subtotal, setQty, remove } = useCart()
   const { deliveryFee, smallMin, smallStep } = useSettings()
+  const hasAssorted = items.some((i) => /assorted/i.test(i.name))
 
   if (items.length === 0) {
     return (
@@ -21,6 +23,7 @@ export default function Cart() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-3xl font-bold">Your cart</h1>
+      {hasAssorted && <div className="mt-4"><CutoffNotice compact /></div>}
       <ul className="mt-6 space-y-4">
         {items.map((i) => {
           const step = i.mode === 'amount' ? smallStep : 0.5
