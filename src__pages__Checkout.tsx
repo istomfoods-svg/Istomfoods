@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import CountUp from '../components/CountUp'
 import CutoffNotice from '../components/CutoffNotice'
 import { useAuth } from '../context/AuthContext'
 import { lineKg, lineTotal, useCart } from '../context/CartContext'
@@ -24,9 +25,12 @@ export default function Checkout() {
   const [errors, setErrors] = useState<Errors>({})
   const [busy, setBusy] = useState(false)
   const [serverError, setServerError] = useState('')
-  const [method, setMethod] = useState<Method>('paystack')
+  const [picked, setPicked] = useState<Method | null>(null)
   const { user } = useAuth()
   const canTransfer = Boolean(bankName && bankNumber && bankAccountName)
+  // Bank transfer is the first and default choice whenever bank details are set
+  const method: Method = picked ?? (canTransfer ? 'bank_transfer' : 'paystack')
+  const setMethod = (m: Method) => setPicked(m)
 
   useEffect(() => {
     if (user) setF((p) => ({ ...p, name: p.name || ((user.user_metadata?.full_name as string) ?? ''), phone: p.phone || ((user.user_metadata?.phone as string) ?? '') }))
@@ -128,8 +132,8 @@ export default function Checkout() {
 
         <fieldset className="space-y-2">
           <legend className="mb-1 text-sm font-medium">Payment method</legend>
-          {option('paystack', 'Pay online', 'Card, bank transfer or USSD through Paystack. Confirmed instantly.')}
-          {canTransfer && option('bank_transfer', 'Direct bank transfer', 'Send the money to our bank account. We confirm it and start your order.')}
+          {canTransfer && option('bank_transfer', 'Direct bank transfer', 'Send the money straight to our bank account. We confirm it and start your order.')}
+          {option('paystack', 'Pay online with card or USSD', 'Quick checkout through Paystack. Confirmed automatically.')}
         </fieldset>
 
         {serverError && (
@@ -155,7 +159,7 @@ export default function Checkout() {
           <div className="space-y-1 border-t pt-3">
             <div className="flex justify-between"><span>Subtotal</span><span>{naira(subtotal)}</span></div>
             <div className="flex justify-between"><span>Delivery fee</span><span>{feeText(deliveryFee)}</span></div>
-            <div className="flex justify-between text-lg font-extrabold text-brand-red"><span>Total</span><span>{naira(total)}</span></div>
+            <div className="flex justify-between text-lg font-extrabold text-brand-red"><span>Total</span><span><CountUp value={total} format={naira} /></span></div>
           </div>
         </div>
       </aside>

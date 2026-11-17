@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import Confetti from '../components/Confetti'
+import ShareButton from '../components/ShareButton'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
@@ -54,6 +56,7 @@ export default function PaymentComplete() {
 
       {state === 'success' && (
         <>
+          <Confetti />
           <h1 className="text-3xl font-bold text-green-700">Payment received</h1>
           <p className="mt-2 text-neutral-700">Thank you! We got {naira(total)} and we are preparing your order.</p>
           <div className="mt-6 rounded-2xl bg-brand-soft p-4">
@@ -63,6 +66,7 @@ export default function PaymentComplete() {
           </div>
           <a href={help} target="_blank" rel="noreferrer" className="btn mt-6 w-full bg-green-600 text-white hover:bg-green-700">Message us on WhatsApp with this order ID</a>
           <Link to={user ? '/account' : '/my-orders'} className="btn-outline mt-3 w-full">Track my order</Link>
+          <ShareButton className="btn-outline mt-3 w-full" />
         </>
       )}
 

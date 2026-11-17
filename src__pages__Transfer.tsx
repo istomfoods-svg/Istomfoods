@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Confetti from '../components/Confetti'
+import ShareButton from '../components/ShareButton'
 import { useSettings } from '../context/SettingsContext'
 import { naira, waLink } from '../lib/format'
 
@@ -37,6 +39,7 @@ export default function Transfer() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-8">
+      <Confetti />
       <h1 className="text-3xl font-bold">Order placed. Now send the money.</h1>
       <p className="mt-2 text-neutral-700">Your order starts as soon as we confirm your transfer.</p>
 
@@ -60,6 +63,7 @@ export default function Transfer() {
 
       <a href={waLink(whatsapp, message)} target="_blank" rel="noreferrer" className="btn mt-6 w-full bg-green-600 text-lg text-white hover:bg-green-700">I have paid. Send receipt on WhatsApp</a>
       <Link to="/my-orders" className="btn-outline mt-3 w-full">Track my order</Link>
+      <ShareButton className="btn-outline mt-3 w-full" />
       <p className="mt-4 text-sm text-neutral-500">Save your order ID. It stays pending until we see your money, and unpaid orders may be cancelled.</p>
     </div>
   )

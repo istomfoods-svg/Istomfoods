@@ -1,5 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import ShareButton from '../components/ShareButton'
+import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useSettings } from '../context/SettingsContext'
 import { fmtKg, naira, statusLabel, waLink } from '../lib/format'
@@ -7,7 +9,7 @@ import { supabase } from '../lib/supabase'
 
 interface OrderRow {
   id: string; reference: string; status: string; total: number; created_at: string
-  order_items: { product_name: string; quantity_kg: number; line_total: number }[]
+  order_items: { product_id: string | null; product_name: string; quantity_kg: number; line_total: number; price_per_kg: number; is_small_portion: boolean }[]
 }
 interface PayRow {
   id: string; reference: string; amount: number; status: string
@@ -95,6 +97,8 @@ function AuthForm() {
 function Dashboard() {
   const { user, signOut } = useAuth()
   const { whatsapp } = useSettings()
+  const { add } = useCart()
+  const navigate = useNavigate()
   const [tab, setTab] = useState<'orders' | 'payments'>('orders')
   const [orders, setOrders] = useState<OrderRow[]>([])
   const [pays, setPays] = useState<PayRow[]>([])
@@ -105,7 +109,7 @@ function Dashboard() {
     let off = false
     ;(async () => {
       const [o, p] = await Promise.all([
-        supabase.from('orders').select('id,reference,status,total,created_at,order_items(product_name,quantity_kg,line_total)').order('created_at', { ascending: false }),
+        supabase.from('orders').select('id,reference,status,total,created_at,order_items(product_id,product_name,quantity_kg,line_total,price_per_kg,is_small_portion)').order('created_at', { ascending: false }),
         supabase.from('payments').select('id,reference,amount,status,channel,paid_at,created_at').order('created_at', { ascending: false }),
       ])
       if (off) return
@@ -115,6 +119,22 @@ function Dashboard() {
     })()
     return () => { off = true }
   }, [])
+
+  const orderAgain = async (o: OrderRow) => {
+    const ids = o.order_items.map((i) => i.product_id).filter(Boolean) as string[]
+    if (!ids.length) return
+    const { data } = await supabase.from('products').select('id,name,price_per_kg,image_url,is_active').in('id', ids)
+    const live: Record<string, { id: string; name: string; price_per_kg: number; image_url: string | null }> = {}
+    ;(data ?? []).forEach((p: { id: string; name: string; price_per_kg: number; image_url: string | null; is_active: boolean }) => { if (p.is_active) live[p.id] = p })
+    let added = 0
+    o.order_items.forEach((i) => {
+      const p = i.product_id ? live[i.product_id] : undefined
+      if (!p) return
+      add({ productId: p.id, name: p.name, pricePerKg: Number(p.price_per_kg), imageUrl: p.image_url, mode: i.is_small_portion ? 'amount' : 'weight', qty: i.is_small_portion ? Number(i.line_total) : Number(i.quantity_kg) })
+      added++
+    })
+    if (added) navigate('/cart')
+  }
 
   const name = (user?.user_metadata?.full_name as string | undefined)?.split(' ')[0] ?? 'there'
 
@@ -164,6 +184,7 @@ function Dashboard() {
                   <li key={idx} className="flex justify-between"><span>{i.product_name} ({fmtKg(i.quantity_kg)})</span><span>{naira(i.line_total)}</span></li>
                 ))}
               </ul>
+              {o.status !== 'pending_payment' && <button type="button" onClick={() => orderAgain(o)} className="btn-outline w-full">Order again</button>}
               <div className="flex items-center justify-between border-t pt-2">
                 <a className="text-sm font-bold text-green-700 underline" target="_blank" rel="noreferrer"
                   href={waLink(whatsapp, `Hello Istom Foods, my order ID is ${o.reference}.`)}>Message us about this order</a>
@@ -188,6 +209,8 @@ function Dashboard() {
           ))}
         </div>
       )}
+
+      <ShareButton className="btn-outline mt-8 w-full" label="Tell a friend about Istom Foods" />
     </div>
   )
 }

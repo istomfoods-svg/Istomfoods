@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import CowCuts from '../components/CowCuts'
 import CutoffNotice from '../components/CutoffNotice'
+import PhotoStrip from '../components/PhotoStrip'
 import ProductImage from '../components/ProductImage'
 import Reveal from '../components/Reveal'
+import { SkeletonGrid } from '../components/Skeleton'
 import { useSettings } from '../context/SettingsContext'
 import { useProducts } from '../hooks'
 import { naira, waLink } from '../lib/format'
@@ -10,7 +12,7 @@ import { naira, waLink } from '../lib/format'
 const steps = [
   ['Choose your meat', 'Pick beef or assorted meat and how much you want.'],
   ['Place your order', 'Add to cart and enter your hostel or address.'],
-  ['Pay securely online', 'Pay with card, bank transfer or USSD through Paystack.'],
+  ['Pay your way', 'Send a bank transfer, or pay by card or USSD.'],
   ['Receive your delivery', 'We bring your meat to your door.'],
 ]
 
@@ -65,8 +67,11 @@ export default function Home() {
       <Ticker items={tickerItems} />
 
       <section className="mx-auto max-w-6xl px-4 py-16">
-        <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Featured meat</h2></Reveal>
-        {loading ? <p className="mt-4 text-neutral-500">Loading products...</p> : (
+        <Reveal>
+          <h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">On the menu</h2>
+          <p className="mt-2 text-neutral-600">Hungry? We got you.</p>
+        </Reveal>
+        {loading ? <SkeletonGrid n={3} /> : (
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {products.slice(0, 3).map((p, i) => (
               <Reveal key={p.id} delay={i * 120}>
@@ -83,6 +88,11 @@ export default function Home() {
         )}
       </section>
 
+      <section className="mx-auto max-w-6xl px-4 pb-12">
+        <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Fresh on the plate</h2></Reveal>
+        <div className="mt-6"><PhotoStrip /></div>
+      </section>
+
       <section className="relative overflow-hidden bg-neutral-950 py-20 text-white md:py-28">
         <div className="relative mx-auto max-w-5xl px-4">
           <Reveal>
@@ -91,6 +101,13 @@ export default function Home() {
           </Reveal>
           <div className="mt-12"><CowCuts /></div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-3xl px-4 py-16 text-center">
+        <Reveal>
+          <h2 className="text-4xl font-extrabold tracking-tight md:text-6xl"><span className="grad-text">Everyone deserves protein.</span></h2>
+          <p className="mx-auto mt-5 max-w-xl text-lg text-neutral-700">Istom Foods was started by a student, for students. Good meat should not be a luxury, whatever your budget. That is why you can buy fresh beef by the kilo, or just {naira(s.smallMin)} of assorted meat with Student Bites, and we bring it to your hostel.</p>
+        </Reveal>
       </section>
 
       <section className="bg-brand-soft py-16">

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import CutoffNotice from '../components/CutoffNotice'
+import CountUp from '../components/CountUp'
 import ProductImage from '../components/ProductImage'
 import { lineKg, lineTotal, useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
@@ -50,9 +51,9 @@ export default function Cart() {
       </ul>
 
       <div className="mt-6 space-y-2 rounded-2xl bg-brand-soft p-4">
-        <div className="flex justify-between"><span>Subtotal</span><span className="font-bold">{naira(subtotal)}</span></div>
+        <div className="flex justify-between"><span>Subtotal</span><span className="font-bold"><CountUp value={subtotal} format={naira} /></span></div>
         <div className="flex justify-between"><span>Delivery fee</span><span className="font-bold">{feeText(deliveryFee)}</span></div>
-        <div className="flex justify-between border-t border-brand-orange/40 pt-2 text-lg"><span className="font-bold">Total</span><span className="font-extrabold text-brand-red">{naira(subtotal + deliveryFee)}</span></div>
+        <div className="flex justify-between border-t border-brand-orange/40 pt-2 text-lg"><span className="font-bold">Total</span><span className="font-extrabold text-brand-red"><CountUp value={subtotal + deliveryFee} format={naira} /></span></div>
       </div>
       <Link to="/checkout" className="btn-red mt-4 w-full text-lg">Go to checkout</Link>
     </div>
