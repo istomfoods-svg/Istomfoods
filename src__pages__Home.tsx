@@ -1,13 +1,18 @@
+import { useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import CowCuts from '../components/CowCuts'
 import CutoffNotice from '../components/CutoffNotice'
+import { SantaSteak, Steak } from '../components/MeatArt'
 import PhotoStrip from '../components/PhotoStrip'
 import ProductImage from '../components/ProductImage'
 import Reveal from '../components/Reveal'
 import { SkeletonGrid } from '../components/Skeleton'
+import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
-import { useProducts } from '../hooks'
+import { useAnnouncements, useProducts } from '../hooks'
 import { naira, waLink } from '../lib/format'
+import type { Product } from '../types'
+import { postDate } from './Board'
 
 const steps = [
   ['Choose your meat', 'Pick beef or assorted meat and how much you want.'],
@@ -27,12 +32,50 @@ function Ticker({ items }: { items: string[] }) {
   )
 }
 
+// A product row with Add to cart right on it, no need to open anything
+function QuickCard({ p }: { p: Product }) {
+  const { add } = useCart()
+  const { smallMin } = useSettings()
+  const [flash, setFlash] = useState<'kg' | 'bite' | null>(null)
+  const pulse = (k: 'kg' | 'bite') => { setFlash(k); setTimeout(() => setFlash(null), 1500) }
+
+  const addKg = () => {
+    add({ productId: p.id, name: p.name, pricePerKg: p.price_per_kg, imageUrl: p.image_url, mode: 'weight', qty: 1 })
+    pulse('kg')
+  }
+  const addBite = () => {
+    add({ productId: p.id, name: p.name, pricePerKg: p.price_per_kg, imageUrl: p.image_url, mode: 'amount', qty: smallMin })
+    pulse('bite')
+  }
+
+  return (
+    <div className="card-lift flex gap-4 rounded-3xl border border-neutral-200 bg-white p-3">
+      <Link to="/shop" className="h-28 w-28 shrink-0 overflow-hidden rounded-2xl sm:h-32 sm:w-32" aria-label={`See ${p.name} in the shop`}>
+        <ProductImage url={p.image_url} name={p.name} />
+      </Link>
+      <div className="flex min-w-0 flex-1 flex-col justify-between">
+        <div>
+          <h3 className="text-lg font-bold">{p.name}</h3>
+          <p className="font-bold text-brand-red">{naira(p.price_per_kg)} <span className="text-xs font-medium text-neutral-500">per kg</span></p>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          <button type="button" onClick={addKg} className="btn-red px-4 py-2 text-sm">{flash === 'kg' ? 'Added ✓' : 'Add 1kg'}</button>
+          {p.small_portion_enabled && <button type="button" onClick={addBite} className="btn-outline px-3 py-2 text-sm">{flash === 'bite' ? 'Added ✓' : `Add ${naira(smallMin)}`}</button>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   const { products, loading } = useProducts()
+  const { items: posts } = useAnnouncements(3)
   const s = useSettings()
   const free = s.deliveryFee === 0
+  const xmas = s.christmas
 
   const tickerItems = [
+    ...(xmas ? ['Merry Christmas from Istom Foods'] : []),
     'Fresh beef daily',
     ...(free ? ['Free delivery on every order'] : []),
     `Student Bites from ${naira(s.smallMin)}`,
@@ -42,22 +85,32 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative isolate flex min-h-[36rem] items-end overflow-hidden bg-[#1a0508] text-white md:min-h-[40rem] md:items-center">
+      {xmas && (
+        <div className="py-2 text-center text-sm font-bold text-white" style={{ background: 'linear-gradient(90deg,#0f5132,#C8102E,#0f5132)' }}>
+          🎄 Merry Christmas from Istom Foods. Order early for the holidays. 🥩
+        </div>
+      )}
+
+      <section className="relative isolate flex min-h-[24rem] items-end overflow-hidden bg-[#1a0508] text-white md:min-h-[30rem] md:items-center">
         <img src="/hero.jpg" alt="" aria-hidden="true"
           className="hero-photo absolute inset-0 -z-20 h-full w-full object-cover object-[50%_30%] md:left-auto md:right-0 md:w-[55%]" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#1a0508] via-[#1a0508]/55 to-black/20 md:bg-gradient-to-r md:from-[#1a0508] md:via-[#1a0508]/60 md:to-transparent" />
-        <div className="relative mx-auto w-full max-w-6xl px-4 pb-14 pt-24 md:py-32">
-          <div className="rise flex flex-wrap items-center gap-3">
-            {free && <p className="inline-block rounded-full bg-white/15 px-4 py-1 text-sm font-bold backdrop-blur">Free delivery on every order</p>}
-            <span className="sticker text-sm">⏰ Assorted orders close 10am</span>
+        <div className="sway pointer-events-none absolute right-3 top-3 w-20 md:right-[8%] md:top-10 md:w-32" style={{ ['--r' as string]: '10deg' } as CSSProperties} aria-hidden="true">
+          {xmas ? <SantaSteak className="block h-auto w-full" /> : <Steak className="block h-auto w-full" />}
+        </div>
+        <div className="relative mx-auto w-full max-w-6xl px-4 pb-8 pt-14 md:py-20">
+          <div className="rise flex flex-wrap items-center gap-2">
+            {free && <p className="inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur">Free delivery on every order</p>}
+            <span className="sticker text-xs">⏰ Assorted orders close 10am</span>
+            {xmas && <span className="sticker text-xs" style={{ background: '#16a34a', color: '#fff' }}>🎄 Merry Christmas</span>}
           </div>
-          <h1 className="rise mt-5 max-w-2xl text-5xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl md:text-7xl" style={{ animationDelay: '120ms' }}>
+          <h1 className="rise mt-4 max-w-2xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl" style={{ animationDelay: '120ms' }}>
             Fresh Meat, Delivered to Your Doorstep.
           </h1>
-          <p className="rise mt-6 max-w-xl text-lg text-white/90 md:text-xl" style={{ animationDelay: '260ms' }}>
+          <p className="rise mt-4 max-w-xl text-base text-white/90 md:text-lg" style={{ animationDelay: '260ms' }}>
             Order fresh beef and assorted meat from Istom Foods. Convenient, affordable, and delivered to you.
           </p>
-          <div className="rise mt-10 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: '400ms' }}>
+          <div className="rise mt-6 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: '400ms' }}>
             <Link to="/shop" className="btn-red text-lg">Order Now 🔥</Link>
             <Link to="/student-bites" className="btn-outline">Student Bites from {naira(s.smallMin)}</Link>
           </div>
@@ -66,51 +119,60 @@ export default function Home() {
 
       <Ticker items={tickerItems} />
 
-      <section className="mx-auto max-w-6xl px-4 py-16">
+      <section className="mx-auto max-w-6xl px-4 py-12">
         <Reveal>
           <h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">On the menu</h2>
-          <p className="mt-2 text-neutral-600">Hungry? We got you.</p>
+          <p className="mt-2 text-neutral-600">Hungry? We got you. Add straight to your cart.</p>
         </Reveal>
-        {loading ? <SkeletonGrid n={3} /> : (
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {products.slice(0, 3).map((p, i) => (
-              <Reveal key={p.id} delay={i * 120}>
-                <Link to="/shop" className="card-lift block overflow-hidden rounded-3xl border border-neutral-200 bg-white">
-                  <div className="aspect-[4/3]"><ProductImage url={p.image_url} name={p.name} /></div>
-                  <div className="p-5">
-                    <h3 className="text-xl font-bold">{p.name}</h3>
-                    <p className="font-bold text-brand-red">{naira(p.price_per_kg)} per kg</p>
-                  </div>
+        {loading ? <SkeletonGrid n={2} cols="md:grid-cols-2" /> : (
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {products.map((p, i) => <Reveal key={p.id} delay={i * 100}><QuickCard p={p} /></Reveal>)}
+          </div>
+        )}
+        <div className="mt-6 text-center"><Link to="/shop" className="font-bold text-brand-red underline">See the full shop</Link></div>
+      </section>
+
+      {posts.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 pb-12">
+          <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Campus board</h2></Reveal>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {posts.map((a, i) => (
+              <Reveal key={a.id} delay={i * 100}>
+                <Link to="/board" className="card-lift block h-full rounded-3xl border border-neutral-200 bg-white p-5">
+                  <p className="text-xs text-neutral-500">{a.pinned ? '📌 ' : ''}{postDate(a.created_at)}</p>
+                  <h3 className="mt-1 text-lg font-bold">{a.title}</h3>
+                  <p className="mt-1 line-clamp-3 text-sm text-neutral-700">{a.body}</p>
                 </Link>
               </Reveal>
             ))}
           </div>
-        )}
-      </section>
+          <div className="mt-4 text-center"><Link to="/board" className="font-bold text-brand-red underline">See all updates</Link></div>
+        </section>
+      )}
 
       <section className="mx-auto max-w-6xl px-4 pb-12">
         <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Fresh on the plate</h2></Reveal>
-        <div className="mt-6"><PhotoStrip /></div>
+        <div className="mt-4"><PhotoStrip /></div>
       </section>
 
-      <section className="relative overflow-hidden bg-neutral-950 py-20 text-white md:py-28">
+      <section className="relative overflow-hidden bg-neutral-950 py-16 text-white md:py-24">
         <div className="relative mx-auto max-w-5xl px-4">
           <Reveal>
             <h2 className="text-center text-4xl font-extrabold tracking-tight md:text-6xl"><span className="grad-text">Know your beef.</span></h2>
             <p className="mx-auto mt-4 max-w-xl text-center text-lg text-neutral-400">Every cut has its own job. Tap a piece to see what it is best for.</p>
           </Reveal>
-          <div className="mt-12"><CowCuts /></div>
+          <div className="mt-10"><CowCuts /></div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 py-16 text-center">
+      <section className="mx-auto max-w-3xl px-4 py-14 text-center">
         <Reveal>
           <h2 className="text-4xl font-extrabold tracking-tight md:text-6xl"><span className="grad-text">Everyone deserves protein.</span></h2>
           <p className="mx-auto mt-5 max-w-xl text-lg text-neutral-700">Istom Foods was started by a student, for students. Good meat should not be a luxury, whatever your budget. That is why you can buy fresh beef by the kilo, or just {naira(s.smallMin)} of assorted meat with Student Bites, and we bring it to your hostel.</p>
         </Reveal>
       </section>
 
-      <section className="bg-brand-soft py-16">
+      <section className="bg-brand-soft py-14">
         <div className="mx-auto max-w-6xl px-4">
           <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">How it works</h2></Reveal>
           <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -129,7 +191,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16">
+      <section className="mx-auto max-w-6xl px-4 py-14">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
           <Reveal>
             <h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Delivery for students</h2>
@@ -147,7 +209,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-neutral-900 py-14 text-center text-white">
+      <section className="bg-neutral-900 py-12 text-center text-white">
         <Reveal>
           <h2 className="text-3xl font-bold">Questions? Chat with us.</h2>
           <a href={waLink(s.whatsapp, 'Hello Istom Foods, I have a question.')} target="_blank" rel="noreferrer" className="btn mt-5 bg-green-600 text-white hover:bg-green-700">Chat on WhatsApp</a>

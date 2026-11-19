@@ -29,4 +29,14 @@ export interface Settings {
   bankName: string
   bankNumber: string
   bankAccountName: string
+  christmas: boolean
+}
+
+export interface Announcement {
+  id: string
+  title: string
+  body: string
+  pinned: boolean
+  is_published: boolean
+  created_at: string
 }

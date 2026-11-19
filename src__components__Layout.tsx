@@ -3,12 +3,15 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
 import { naira, waLink } from '../lib/format'
+import { Lights, SantaHat, Snow } from './Christmas'
+import { MeatDecor } from './MeatArt'
 
 const links: [string, string][] = [
   ['/', 'Home'],
   ['/shop', 'Shop'],
   ['/student-bites', 'Student Bites'],
   ['/account', 'My Orders'],
+  ['/board', 'Board'],
   ['/contact', 'Contact'],
 ]
 
@@ -39,7 +42,7 @@ const tabs: [string, string, string][] = [
   ['/account', 'Account', 'user'],
 ]
 
-function Logo() {
+function Logo({ christmas }: { christmas: boolean }) {
   // Shows /logo.png if it exists, otherwise falls back to the letter badge
   const [noImage, setNoImage] = useState(false)
   return (
@@ -49,7 +52,10 @@ function Logo() {
           I<span className="text-brand-orange">F</span>
         </span>
       ) : (
-        <img src="/logo.png" alt="Istom Foods logo" className="h-11 w-11 rounded-full bg-white object-cover" onError={() => setNoImage(true)} />
+        <span className="relative">
+          <img src="/logo.png" alt="Istom Foods logo" className="h-11 w-11 rounded-full bg-white object-cover" onError={() => setNoImage(true)} />
+          {christmas && <SantaHat className="absolute -right-2 -top-3 h-6 w-7 rotate-12" />}
+        </span>
       )}
       <span className="leading-tight">
         <span className="block font-display text-lg font-extrabold text-brand-red">Istom Foods</span>
@@ -61,7 +67,7 @@ function Logo() {
 
 export default function Layout() {
   const { count, subtotal } = useCart()
-  const { whatsapp } = useSettings()
+  const { whatsapp, christmas } = useSettings()
   const [open, setOpen] = useState(false)
   const [pulse, setPulse] = useState(false)
   const prevTotal = useRef<number | null>(null)
@@ -88,11 +94,13 @@ export default function Layout() {
 
   return (
     <div className="theme-meat flex min-h-screen flex-col">
-      <div className="meat-bg" aria-hidden="true"><span className="blob b1" /><span className="blob b2" /><span className="blob b3" /></div>
+      <div className="meat-bg" aria-hidden="true"><span className="blob b1" /><span className="blob b2" /><span className="blob b3" /><MeatDecor christmas={christmas} /></div>
+      {christmas && <Snow />}
 
       <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur">
+        {christmas && <Lights />}
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Logo />
+          <Logo christmas={christmas} />
           <nav className="hidden items-center gap-1 md:flex">
             {links.map(([to, label]) => <NavLink key={to} to={to} end={to === '/'} className={navClass}>{label}</NavLink>)}
           </nav>

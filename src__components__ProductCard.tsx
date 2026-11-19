@@ -12,6 +12,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const { add } = useCart()
   const [qty, setQty] = useState(1)
   const [custom, setCustom] = useState('')
+  const [showCustom, setShowCustom] = useState(false)
   const [added, setAdded] = useState(false)
 
   const valid = qty >= 0.25 && qty <= 50
@@ -30,38 +31,37 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="card-lift overflow-hidden rounded-3xl border border-neutral-200 bg-white">
-      <div className="aspect-[4/3]"><ProductImage url={product.image_url} name={product.name} /></div>
-      <div className="space-y-4 p-4">
-        <div>
-          <h3 className="text-xl font-bold">{product.name}</h3>
-          <p className="text-lg font-bold text-brand-red">{naira(product.price_per_kg)} <span className="text-sm font-medium text-neutral-500">per kg</span></p>
-          {product.description && <p className="mt-1 text-sm text-neutral-600">{product.description}</p>}
-        </div>
-
-        <div>
-          <p className="mb-2 text-sm font-medium">How many kg?</p>
-          <div className="flex flex-wrap gap-2">
-            {PRESETS.map((p) => (
-              <button key={p} type="button" onClick={() => { setQty(p); setCustom('') }}
-                className={`chip ${qty === p && !custom ? 'chip-on' : ''}`}>{p}kg</button>
-            ))}
+      <div className="h-32 sm:h-40"><ProductImage url={product.image_url} name={product.name} /></div>
+      <div className="space-y-3 p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h3 className="text-lg font-bold">{product.name}</h3>
+            <p className="font-bold text-brand-red">{naira(product.price_per_kg)} <span className="text-xs font-medium text-neutral-500">per kg</span></p>
           </div>
-          <input type="number" inputMode="decimal" min="0.25" step="0.25" placeholder="Or type your own kg, e.g. 3"
-            value={custom} onChange={(e) => onCustom(e.target.value)} className="input mt-3" aria-label="Custom kilograms" />
-          {!valid && <p className="mt-1 text-sm text-red-600">Enter between 0.25kg and 50kg.</p>}
+          <p className="text-right"><span className="block text-xs text-neutral-500">Total</span><span className="text-lg font-extrabold">{valid ? naira(qty * product.price_per_kg) : '-'}</span></p>
         </div>
+        {product.description && <p className="line-clamp-2 text-sm text-neutral-600">{product.description}</p>}
 
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-neutral-600">Total</span>
-          <span className="text-lg font-bold">{valid ? naira(qty * product.price_per_kg) : '-'}</span>
+        <div className="flex flex-wrap gap-2" role="group" aria-label="How many kilograms">
+          {PRESETS.map((p) => (
+            <button key={p} type="button" onClick={() => { setQty(p); setCustom(''); setShowCustom(false) }}
+              className={`chip ${qty === p && !showCustom ? 'chip-on' : ''}`}>{p}kg</button>
+          ))}
+          <button type="button" onClick={() => setShowCustom((s) => !s)} className={`chip ${showCustom ? 'chip-on' : ''}`}>Custom</button>
         </div>
-
-        {/assorted/i.test(product.name) && <CutoffNotice compact />}
+        {showCustom && (
+          <div>
+            <input type="number" inputMode="decimal" min="0.25" step="0.25" placeholder="Type kg, e.g. 3" value={custom}
+              onChange={(e) => onCustom(e.target.value)} className="input" aria-label="Custom kilograms" />
+            {!valid && <p className="mt-1 text-sm text-red-600">Enter between 0.25kg and 50kg.</p>}
+          </div>
+        )}
 
         <button type="button" onClick={addToCart} disabled={!valid} className="btn-red w-full">
-          {added ? 'Added to cart' : 'Add to cart'}
+          {added ? 'Added to cart ✓' : 'Add to cart'}
         </button>
         {added && <Link to="/cart" className="block text-center text-sm font-bold text-brand-red underline">View cart</Link>}
+        {/assorted/i.test(product.name) && <CutoffNotice compact />}
       </div>
     </article>
   )

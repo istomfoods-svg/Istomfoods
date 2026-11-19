@@ -34,7 +34,7 @@ function BiteCard({ product }: { product: Product }) {
 
   return (
     <article className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-      <div className="aspect-[16/9]"><ProductImage url={product.image_url} name={product.name} /></div>
+      <div className="h-32 sm:h-40"><ProductImage url={product.image_url} name={product.name} /></div>
       <div className="space-y-4 p-4">
         <h3 className="text-xl font-bold">{product.name}</h3>
         <div>

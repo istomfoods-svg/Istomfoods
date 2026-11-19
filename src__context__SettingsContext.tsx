@@ -11,6 +11,7 @@ const defaults: Settings = {
   bankName: '',
   bankNumber: '',
   bankAccountName: '',
+  christmas: false,
 }
 
 const Ctx = createContext<Settings>(defaults)
@@ -36,6 +37,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
           bankName: (m.bank_name ?? '').trim(),
           bankNumber: (m.bank_account_number ?? '').trim(),
           bankAccountName: (m.bank_account_name ?? '').trim(),
+          christmas: (m.christmas_mode ?? 'on').trim().toLowerCase() !== 'off',
         })
       })
   }, [])

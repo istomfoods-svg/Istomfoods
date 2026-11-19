@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import AdminBoard from '../components/AdminBoard'
 import { useAuth } from '../context/AuthContext'
 import { fmtKg, naira, statusLabel, waLink } from '../lib/format'
 import { supabase } from '../lib/supabase'
@@ -123,6 +124,7 @@ export default function Admin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [tab, setTab] = useState<'orders' | 'board'>('orders')
 
   useEffect(() => {
     if (!user) { setIsAdmin(null); return }
@@ -142,7 +144,7 @@ export default function Admin() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">Orders</h1>
+        <h1 className="text-3xl font-bold">Admin</h1>
         {user && <button type="button" onClick={signOut} className="rounded-xl border border-neutral-300 px-3 py-2 text-sm font-bold">Sign out</button>}
       </div>
 
@@ -158,7 +160,17 @@ export default function Admin() {
 
       {user && isAdmin === null && <p className="mt-6 text-neutral-500">Checking access...</p>}
       {user && isAdmin === false && <p className="mt-6 rounded-xl bg-red-50 p-4 text-red-700">This account is not an admin account.</p>}
-      {user && isAdmin && <div className="mt-6"><Orders /></div>}
+      {user && isAdmin && (
+        <div className="mt-6">
+          <div className="mb-4 grid grid-cols-2 gap-2 rounded-xl bg-neutral-100 p-1" role="tablist">
+            {([['orders', 'Orders'], ['board', 'Board']] as const).map(([k, label]) => (
+              <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)}
+                className={`rounded-lg py-2 font-bold ${tab === k ? 'bg-white text-brand-red shadow' : 'text-neutral-600'}`}>{label}</button>
+            ))}
+          </div>
+          {tab === 'orders' ? <Orders /> : <AdminBoard />}
+        </div>
+      )}
     </div>
   )
 }
