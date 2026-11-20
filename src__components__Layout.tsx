@@ -3,14 +3,14 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
 import { naira, waLink } from '../lib/format'
-import { Lights, SantaHat, Snow } from './Christmas'
-import { MeatDecor } from './MeatArt'
+import { SantaHat, Snow } from './Christmas'
 
 const links: [string, string][] = [
   ['/', 'Home'],
   ['/shop', 'Shop'],
   ['/student-bites', 'Student Bites'],
   ['/account', 'My Orders'],
+  ['/beef', 'Know your beef'],
   ['/board', 'Board'],
   ['/contact', 'Contact'],
 ]
@@ -59,7 +59,6 @@ function Logo({ christmas }: { christmas: boolean }) {
       )}
       <span className="leading-tight">
         <span className="block font-display text-lg font-extrabold text-brand-red">Istom Foods</span>
-        <span className="block text-xs text-neutral-500">Feeding the Nation</span>
       </span>
     </Link>
   )
@@ -94,11 +93,10 @@ export default function Layout() {
 
   return (
     <div className="theme-meat flex min-h-screen flex-col">
-      <div className="meat-bg" aria-hidden="true"><span className="blob b1" /><span className="blob b2" /><span className="blob b3" /><MeatDecor christmas={christmas} /></div>
+      <div className="meat-bg" aria-hidden="true" />
       {christmas && <Snow />}
 
       <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur">
-        {christmas && <Lights />}
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <Logo christmas={christmas} />
           <nav className="hidden items-center gap-1 md:flex">

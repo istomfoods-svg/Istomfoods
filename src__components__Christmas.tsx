@@ -3,7 +3,7 @@ import { useMemo, type CSSProperties } from 'react'
 const BULBS = ['#ff3b3b', '#FF8A3D', '#FFC27A', '#FFF1EA']
 
 export function Snow() {
-  const flakes = useMemo(() => Array.from({ length: 26 }, (_, i) => {
+  const flakes = useMemo(() => Array.from({ length: 12 }, (_, i) => {
     const r = (n: number) => { const x = Math.sin(i * 97.13 + n * 12.7) * 10000; return x - Math.floor(x) }
     return { left: r(1) * 100, size: 3 + r(2) * 5, dur: 9 + r(3) * 9, delay: -r(4) * 18, drift: (r(5) - 0.5) * 80, op: 0.45 + r(6) * 0.4 }
   }), [])

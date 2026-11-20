@@ -117,3 +117,18 @@ option { background: #2a0a10; color: #fff1ea; }
 @keyframes sway { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-14px) rotate(calc(var(--r, 0deg) + 6deg)); } }
 .sway { animation: sway 9s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .snow { display: none; } .lights li, .sway { animation: none; } }
+
+/* ---------- Minimal look: calm, flat, plenty of space ---------- */
+.meat-bg { background: var(--wine); }
+.meat-bg::before { background: none; animation: none; }
+.meat-bg::after { background: radial-gradient(ellipse at 50% -15%, rgba(225,29,46,.16), transparent 60%); }
+.meat-bg .blob { display: none; }
+.grad-text { background-image: none; -webkit-background-clip: border-box; background-clip: border-box; color: #FFF1EA; }
+.btn-red { background-image: none; background-color: #E11D2E; box-shadow: none; }
+.btn-red:hover { background-color: #C8102E; }
+.chip-on { background-image: none; background-color: #E11D2E; border-color: #E11D2E; }
+.card-lift:hover { transform: none; box-shadow: none; }
+.theme-meat .bg-white { background-color: rgba(255,255,255,.05); }
+.theme-meat .border-neutral-200, .theme-meat .border-neutral-300, .theme-meat .border-neutral-100 { border-color: rgba(255,255,255,.1); }
+@keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.page-enter { animation: pageIn .4s ease-out backwards; }
