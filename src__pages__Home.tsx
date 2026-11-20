@@ -21,17 +21,6 @@ const steps = [
   ['Receive your delivery', 'We bring your meat to your door.'],
 ]
 
-function Ticker({ items }: { items: string[] }) {
-  const row = [...items, ...items]
-  return (
-    <div className="overflow-hidden border-y border-white/10 py-3" style={{ background: 'linear-gradient(90deg,#9E0B22,#E11D2E,#FF5A3C)' }} aria-hidden="true">
-      <div className="ticker flex w-max whitespace-nowrap font-display text-lg font-bold uppercase tracking-wide text-white">
-        {row.map((t, i) => <span key={i} className="pr-10">{t} <span className="pl-10">✦</span></span>)}
-      </div>
-    </div>
-  )
-}
-
 // A product row with Add to cart right on it, no need to open anything
 function QuickCard({ p }: { p: Product }) {
   const { add } = useCart()
@@ -73,15 +62,6 @@ export default function Home() {
   const s = useSettings()
   const free = s.deliveryFee === 0
   const xmas = s.christmas
-
-  const tickerItems = [
-    ...(xmas ? ['Merry Christmas from Istom Foods'] : []),
-    'Fresh beef daily',
-    ...(free ? ['Free delivery on every order'] : []),
-    `Student Bites from ${naira(s.smallMin)}`,
-    'Assorted orders close at 10am',
-    'Book a day before',
-  ]
 
   const features = [
     { icon: '🥩', title: 'Fresh beef', text: 'Freshly processed and locally sourced, sold by the kilo.' },
@@ -126,18 +106,18 @@ export default function Home() {
         </div>
       </section>
 
-      <Ticker items={tickerItems} />
-
       {/* 2. About: who we are and what we do */}
       <section id="about" className="scroll-mt-20 bg-brand-soft py-14">
         <div className="mx-auto max-w-6xl px-4">
+          <Reveal>
+            <div className="mb-10 flex flex-col items-center text-center">
+              <img src="/logo.png" alt="Istom Foods logo" className="h-24 w-24 rounded-full bg-white object-cover shadow-lg" />
+              <p className="mt-3 font-display text-3xl font-extrabold">Istom Foods</p>
+            </div>
+          </Reveal>
           <div className="grid gap-8 md:grid-cols-5 md:items-center">
             <Reveal className="md:col-span-3">
-              <div className="flex items-center gap-3">
-                <img src="/logo.png" alt="" aria-hidden="true" className="h-16 w-16 rounded-full bg-white object-cover" />
-                <div><p className="font-display text-2xl font-extrabold">Istom Foods</p><p className="text-sm font-bold" style={{ color: '#FF8A3D' }}>Feeding the Nation</p></div>
-              </div>
-              <h2 className="grad-text mt-5 text-4xl font-extrabold tracking-tight md:text-5xl">Who we are</h2>
+              <h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Who we are</h2>
               <p className="mt-4 text-lg text-neutral-700">Istom Foods is a Nigerian meat supplier and food processor based in Ado-Ekiti, Ekiti State. We sell freshly processed, locally sourced beef and assorted meat, and we deliver to students and families around EKSU and across {s.deliveryArea}.</p>
               <p className="mt-3 text-neutral-700">We were started by a student, for students. Everyone deserves protein, so good meat should not be a luxury, whatever your budget.</p>
               <div className="mt-6 flex flex-wrap gap-3">
