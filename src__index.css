@@ -13,7 +13,7 @@ option { background: #2a0a10; color: #fff1ea; }
 @layer components {
   .btn { @apply inline-flex items-center justify-center rounded-2xl px-5 py-3 font-bold transition duration-300 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50; }
   .btn-red { @apply btn text-white hover:-translate-y-0.5; background-image: linear-gradient(135deg, #E11D2E, #FF5A3C); box-shadow: 0 12px 30px -10px rgba(225,29,46,.8); }
-  .btn-white { @apply btn bg-white hover:-translate-y-0.5; color: #B3121F; }
+  .btn-white { @apply btn hover:-translate-y-0.5; background: #FFF1EA; color: #9E0B22; }
   .btn-outline { @apply btn border-2 hover:bg-white/10; border-color: rgba(255,255,255,.35); color: var(--cream); }
   .input { @apply w-full rounded-2xl px-4 py-3 text-base; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.22); color: var(--cream); }
   .input::placeholder { color: rgba(255,241,234,.45); }
@@ -21,7 +21,7 @@ option { background: #2a0a10; color: #fff1ea; }
   .chip { @apply rounded-full px-4 py-2 text-sm font-bold transition duration-300; border: 2px solid rgba(255,255,255,.22); color: var(--cream); }
   .chip-on { border-color: #FF5A3C; background-image: linear-gradient(135deg, #E11D2E, #FF5A3C); color: #fff; }
   .grad-text { background-image: linear-gradient(90deg, #FFC27A, #FF5A3C); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .sticker { display: inline-block; transform: rotate(-4deg); background: #FFA94D; color: #3b0a0f; font-weight: 800; padding: .35rem .8rem; border-radius: .75rem; box-shadow: 0 8px 20px -8px rgba(0,0,0,.6); transition: transform .3s; }
+  .sticker { display: inline-block; transform: rotate(-4deg); background: #FF8A3D; color: #3b0a0f; font-weight: 800; padding: .35rem .8rem; border-radius: .75rem; box-shadow: 0 8px 20px -8px rgba(0,0,0,.6); transition: transform .3s; }
   .sticker:hover { transform: rotate(3deg) scale(1.06); }
 }
 
@@ -76,8 +76,8 @@ option { background: #2a0a10; color: #fff1ea; }
 .card-lift:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -20px rgba(225,29,46,.55); }
 
 .cut { cursor: pointer; outline: none; }
-.cut path { fill: #C8102E; stroke: rgba(255,255,255,.35); stroke-width: 2; transition: fill .35s ease; }
-.cut:hover path, .cut:focus-visible path, .cut.on path { fill: #F58220; }
+.cut path { fill: #E11D2E; stroke: rgba(255,255,255,.35); stroke-width: 2; transition: fill .35s ease; }
+.cut:hover path, .cut:focus-visible path, .cut.on path { fill: #FF8A3D; }
 
 @media (min-width: 768px) {
   .hero-photo {

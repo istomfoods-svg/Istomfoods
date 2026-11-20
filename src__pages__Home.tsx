@@ -83,14 +83,22 @@ export default function Home() {
     'Book a day before',
   ]
 
+  const features = [
+    { icon: '🥩', title: 'Fresh beef', text: 'Freshly processed and locally sourced, sold by the kilo.' },
+    { icon: '🍲', title: 'Assorted meat', text: 'A mix of quality cuts, great for soups and stews.' },
+    { icon: '🎓', title: 'Made for students', text: `Student Bites start from ${naira(s.smallMin)}.` },
+    { icon: '🚚', title: free ? 'Free delivery' : 'We deliver', text: `To hostels and addresses around EKSU and across ${s.deliveryArea}.` },
+  ]
+
   return (
     <>
       {xmas && (
-        <div className="py-2 text-center text-sm font-bold text-white" style={{ background: 'linear-gradient(90deg,#0f5132,#C8102E,#0f5132)' }}>
+        <div className="py-2 text-center text-sm font-bold text-white" style={{ background: 'linear-gradient(90deg,#9E0B22,#E11D2E,#9E0B22)' }}>
           🎄 Merry Christmas from Istom Foods. Order early for the holidays. 🥩
         </div>
       )}
 
+      {/* 1. Welcome */}
       <section className="relative isolate flex min-h-[24rem] items-end overflow-hidden bg-[#1a0508] text-white md:min-h-[30rem] md:items-center">
         <img src="/hero.jpg" alt="" aria-hidden="true"
           className="hero-photo absolute inset-0 -z-20 h-full w-full object-cover object-[50%_30%] md:left-auto md:right-0 md:w-[55%]" />
@@ -102,7 +110,7 @@ export default function Home() {
           <div className="rise flex flex-wrap items-center gap-2">
             {free && <p className="inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur">Free delivery on every order</p>}
             <span className="sticker text-xs">⏰ Assorted orders close 10am</span>
-            {xmas && <span className="sticker text-xs" style={{ background: '#16a34a', color: '#fff' }}>🎄 Merry Christmas</span>}
+            {xmas && <span className="sticker text-xs">🎄 Merry Christmas</span>}
           </div>
           <h1 className="rise mt-4 max-w-2xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl" style={{ animationDelay: '120ms' }}>
             Fresh Meat, Delivered to Your Doorstep.
@@ -112,66 +120,66 @@ export default function Home() {
           </p>
           <div className="rise mt-6 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: '400ms' }}>
             <Link to="/shop" className="btn-red text-lg">Order Now 🔥</Link>
-            <Link to="/student-bites" className="btn-outline">Student Bites from {naira(s.smallMin)}</Link>
+            <a href="#about" className="btn-outline">About Istom Foods</a>
           </div>
+          <p className="rise mt-3 text-sm text-white/70" style={{ animationDelay: '520ms' }}>Or tap the <b>Shop</b> icon any time to browse everything.</p>
         </div>
       </section>
 
       <Ticker items={tickerItems} />
 
+      {/* 2. About: who we are and what we do */}
+      <section id="about" className="scroll-mt-20 bg-brand-soft py-14">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid gap-8 md:grid-cols-5 md:items-center">
+            <Reveal className="md:col-span-3">
+              <div className="flex items-center gap-3">
+                <img src="/logo.png" alt="" aria-hidden="true" className="h-16 w-16 rounded-full bg-white object-cover" />
+                <div><p className="font-display text-2xl font-extrabold">Istom Foods</p><p className="text-sm font-bold" style={{ color: '#FF8A3D' }}>Feeding the Nation</p></div>
+              </div>
+              <h2 className="grad-text mt-5 text-4xl font-extrabold tracking-tight md:text-5xl">Who we are</h2>
+              <p className="mt-4 text-lg text-neutral-700">Istom Foods is a Nigerian meat supplier and food processor based in Ado-Ekiti, Ekiti State. We sell freshly processed, locally sourced beef and assorted meat, and we deliver to students and families around EKSU and across {s.deliveryArea}.</p>
+              <p className="mt-3 text-neutral-700">We were started by a student, for students. Everyone deserves protein, so good meat should not be a luxury, whatever your budget.</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/shop" className="btn-red">Order Now 🔥</Link>
+                <Link to="/contact" className="btn-outline">Contact us</Link>
+              </div>
+            </Reveal>
+            <Reveal delay={120} className="md:col-span-2">
+              <div className="grid grid-cols-2 gap-3">
+                {features.map((f) => (
+                  <div key={f.title} className="card-lift rounded-3xl border border-neutral-200 bg-white p-4">
+                    <div className="text-3xl" aria-hidden="true">{f.icon}</div>
+                    <h3 className="mt-2 font-bold">{f.title}</h3>
+                    <p className="mt-1 text-xs text-neutral-600">{f.text}</p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pt-12">
+        <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Fresh on the plate</h2></Reveal>
+        <div className="mt-4"><PhotoStrip /></div>
+      </section>
+
+      {/* 3. Ready to order */}
       <section className="mx-auto max-w-6xl px-4 py-12">
         <Reveal>
-          <h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">On the menu</h2>
-          <p className="mt-2 text-neutral-600">Hungry? We got you. Add straight to your cart.</p>
+          <h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Ready to order?</h2>
+          <p className="mt-2 text-neutral-600">Add straight to your cart from here, or tap Shop for the full range.</p>
         </Reveal>
         {loading ? <SkeletonGrid n={2} cols="md:grid-cols-2" /> : (
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {products.map((p, i) => <Reveal key={p.id} delay={i * 100}><QuickCard p={p} /></Reveal>)}
           </div>
         )}
-        <div className="mt-6 text-center"><Link to="/shop" className="font-bold text-brand-red underline">See the full shop</Link></div>
+        <div className="mt-6 text-center"><Link to="/shop" className="btn-red">Go to the Shop</Link></div>
       </section>
 
-      {posts.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 pb-12">
-          <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Campus board</h2></Reveal>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {posts.map((a, i) => (
-              <Reveal key={a.id} delay={i * 100}>
-                <Link to="/board" className="card-lift block h-full rounded-3xl border border-neutral-200 bg-white p-5">
-                  <p className="text-xs text-neutral-500">{a.pinned ? '📌 ' : ''}{postDate(a.created_at)}</p>
-                  <h3 className="mt-1 text-lg font-bold">{a.title}</h3>
-                  <p className="mt-1 line-clamp-3 text-sm text-neutral-700">{a.body}</p>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-          <div className="mt-4 text-center"><Link to="/board" className="font-bold text-brand-red underline">See all updates</Link></div>
-        </section>
-      )}
-
-      <section className="mx-auto max-w-6xl px-4 pb-12">
-        <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Fresh on the plate</h2></Reveal>
-        <div className="mt-4"><PhotoStrip /></div>
-      </section>
-
-      <section className="relative overflow-hidden bg-neutral-950 py-16 text-white md:py-24">
-        <div className="relative mx-auto max-w-5xl px-4">
-          <Reveal>
-            <h2 className="text-center text-4xl font-extrabold tracking-tight md:text-6xl"><span className="grad-text">Know your beef.</span></h2>
-            <p className="mx-auto mt-4 max-w-xl text-center text-lg text-neutral-400">Every cut has its own job. Tap a piece to see what it is best for.</p>
-          </Reveal>
-          <div className="mt-10"><CowCuts /></div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-3xl px-4 py-14 text-center">
-        <Reveal>
-          <h2 className="text-4xl font-extrabold tracking-tight md:text-6xl"><span className="grad-text">Everyone deserves protein.</span></h2>
-          <p className="mx-auto mt-5 max-w-xl text-lg text-neutral-700">Istom Foods was started by a student, for students. Good meat should not be a luxury, whatever your budget. That is why you can buy fresh beef by the kilo, or just {naira(s.smallMin)} of assorted meat with Student Bites, and we bring it to your hostel.</p>
-        </Reveal>
-      </section>
-
+      {/* 4. How it works */}
       <section className="bg-brand-soft py-14">
         <div className="mx-auto max-w-6xl px-4">
           <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">How it works</h2></Reveal>
@@ -191,16 +199,17 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 5. Delivery and Student Bites */}
       <section className="mx-auto max-w-6xl px-4 py-14">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
           <Reveal>
             <h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Delivery for students</h2>
-            <p className="mt-4 text-neutral-700">We deliver to hostels and addresses around EKSU and across {s.deliveryArea}. Give us your hostel and room details at checkout and we bring the meat to you.</p>
+            <p className="mt-4 text-neutral-700">Give us your hostel and room details at checkout and we bring the meat to you.</p>
             <p className="mt-4 text-lg font-bold">{free ? 'Delivery is free on every order.' : `Delivery fee: ${naira(s.deliveryFee)} per order.`}</p>
             <div className="mt-4"><CutoffNotice /></div>
           </Reveal>
           <Reveal delay={150}>
-            <div className="rounded-3xl p-8 text-white" style={{ backgroundImage: 'linear-gradient(135deg,#B3121F,#FF5A3C)', boxShadow: '0 30px 60px -25px rgba(225,29,46,.7)' }}>
+            <div className="rounded-3xl p-8 text-white" style={{ backgroundImage: 'linear-gradient(135deg,#9E0B22,#FF5A3C)', boxShadow: '0 30px 60px -25px rgba(225,29,46,.7)' }}>
               <h3 className="text-3xl font-bold">Student Bites 🥩</h3>
               <p className="mt-2 text-white/90">Not ready for a full kilo? Buy assorted meat from {naira(s.smallMin)} and up.</p>
               <Link to="/student-bites" className="btn-white mt-5">Buy a small portion</Link>
@@ -209,6 +218,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 6. Know your beef */}
+      <section className="relative overflow-hidden bg-neutral-950 py-16 text-white md:py-24">
+        <div className="relative mx-auto max-w-5xl px-4">
+          <Reveal>
+            <h2 className="text-center text-4xl font-extrabold tracking-tight md:text-6xl"><span className="grad-text">Know your beef.</span></h2>
+            <p className="mx-auto mt-4 max-w-xl text-center text-lg text-neutral-400">Every cut has its own job. Tap a piece to see what it is best for.</p>
+          </Reveal>
+          <div className="mt-10"><CowCuts /></div>
+        </div>
+      </section>
+
+      {/* 7. Campus board */}
+      {posts.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-14">
+          <Reveal><h2 className="grad-text text-4xl font-extrabold tracking-tight md:text-5xl">Campus board</h2></Reveal>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {posts.map((a, i) => (
+              <Reveal key={a.id} delay={i * 100}>
+                <Link to="/board" className="card-lift block h-full rounded-3xl border border-neutral-200 bg-white p-5">
+                  <p className="text-xs text-neutral-500">{a.pinned ? '📌 ' : ''}{postDate(a.created_at)}</p>
+                  <h3 className="mt-1 text-lg font-bold">{a.title}</h3>
+                  <p className="mt-1 line-clamp-3 text-sm text-neutral-700">{a.body}</p>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-4 text-center"><Link to="/board" className="font-bold text-brand-red underline">See all updates</Link></div>
+        </section>
+      )}
+
+      {/* 8. Contact */}
       <section className="bg-neutral-900 py-12 text-center text-white">
         <Reveal>
           <h2 className="text-3xl font-bold">Questions? Chat with us.</h2>
