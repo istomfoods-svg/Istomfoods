@@ -1,6 +1,6 @@
 import { useMemo, type CSSProperties } from 'react'
 
-const BULBS = ['#ff3b3b', '#FF8A3D', '#FFC27A', '#FFF1EA']
+const BULBS = ['#ff3b3b', '#FF9330', '#FFC27A', '#FFF1EA']
 
 export function Snow() {
   const flakes = useMemo(() => Array.from({ length: 12 }, (_, i) => {
@@ -29,7 +29,7 @@ export function Lights() {
 export function SantaHat({ className = '' }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 48" className={className} aria-hidden="true">
-      <path d="M6 38C10 14 30 4 52 6c-6 6-8 14-6 26z" fill="#E11D2E" />
+      <path d="M6 38C10 14 30 4 52 6c-6 6-8 14-6 26z" fill="#F12A37" />
       <rect x="2" y="32" width="50" height="12" rx="6" fill="#fff" />
       <circle cx="54" cy="8" r="6" fill="#fff" />
     </svg>

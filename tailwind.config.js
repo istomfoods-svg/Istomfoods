@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: { red: '#E11D2E', deep: '#9E0B22', orange: '#FF8A3D', soft: '#FFF3E6' },
+        brand: { red: '#F12A37', deep: '#9E0B22', orange: '#FF9330', soft: '#FFF3E6' },
       },
       fontFamily: {
         display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],

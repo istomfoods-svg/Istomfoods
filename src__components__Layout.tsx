@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useSettings } from '../context/SettingsContext'
 import { naira, waLink } from '../lib/format'
-import { SantaHat, Snow } from './Christmas'
+import { SantaHat } from './Christmas'
 
 const links: [string, string][] = [
   ['/', 'Home'],
@@ -94,7 +94,6 @@ export default function Layout() {
   return (
     <div className="theme-meat flex min-h-screen flex-col">
       <div className="meat-bg" aria-hidden="true" />
-      {christmas && <Snow />}
 
       <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
@@ -123,7 +122,7 @@ export default function Layout() {
       <footer className="bg-neutral-900 pb-28 pt-8 text-neutral-300 md:pb-8">
         <div className="mx-auto max-w-6xl space-y-2 px-4 text-sm">
           <p className="font-display text-lg font-bold text-white">Istom Foods</p>
-          <p>Feeding the Nation. Fresh beef and assorted meat, Ado-Ekiti, Ekiti State.</p>
+          <p>Fresh beef and assorted meat, Ado-Ekiti, Ekiti State.</p>
           <p>© {new Date().getFullYear()} Istom Foods</p>
         </div>
       </footer>
@@ -131,7 +130,7 @@ export default function Layout() {
       {showBar && (
         <div className="pointer-events-none fixed inset-x-0 bottom-[4.9rem] z-40 flex justify-center px-3 md:bottom-4">
           <Link to="/checkout" className={`bar-in pointer-events-auto flex w-full max-w-md items-center justify-between rounded-2xl px-5 py-3 font-bold text-white ${pulse ? 'pop' : ''}`}
-            style={{ backgroundImage: 'linear-gradient(135deg,#E11D2E,#FF5A3C)', boxShadow: '0 16px 36px -12px rgba(225,29,46,.85)' }}>
+            style={{ backgroundImage: 'linear-gradient(135deg,#F12A37,#FF5E37)', boxShadow: '0 16px 36px -12px rgba(225,29,46,.85)' }}>
             <span>{count} item{count > 1 ? 's' : ''} · {naira(subtotal)}</span>
             <span>Checkout</span>
           </Link>
@@ -148,7 +147,7 @@ export default function Layout() {
           {tabs.map(([to, label, icon]) => (
             <li key={to}>
               <NavLink to={to} end={to === '/'}
-                className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2 text-[11px] font-bold transition ${isActive ? 'text-[#FF8A5C]' : 'text-white/60'}`}>
+                className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2 text-[11px] font-bold transition ${isActive ? 'text-[#FF9A5C]' : 'text-white/60'}`}>
                 <span className={`relative ${icon === 'cart' && pulse ? 'pop' : ''}`}>
                   {icons[icon]}
                   {icon === 'cart' && count > 0 && (

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 
-const COLORS = ['#E11D2E', '#FF5A3C', '#FF8A3D', '#FFC27A', '#FFFFFF']
+const COLORS = ['#F12A37', '#FF5E37', '#FF9330', '#FFC27A', '#FFFFFF']
 
 export default function Confetti() {
   const [on, setOn] = useState(true)

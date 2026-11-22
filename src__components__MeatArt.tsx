@@ -17,7 +17,7 @@ export const SantaSteak = ({ className = '' }: { className?: string }) => (
       <path d={STEAK} fill="none" stroke="#FFD9C9" strokeWidth="5" strokeLinejoin="round" />
       <path d="M34 34c10-6 22-2 26 8M30 56c12 6 24 2 32-8M48 70c8 0 16-4 20-10" stroke="#F7A8A0" strokeWidth="3" fill="none" strokeLinecap="round" />
     </g>
-    <path d="M20 32C22 10 44 0 68 4c-6 6-8 14-6 24z" fill="#E11D2E" />
+    <path d="M20 32C22 10 44 0 68 4c-6 6-8 14-6 24z" fill="#F12A37" />
     <rect x="14" y="26" width="52" height="11" rx="5.5" fill="#fff" />
     <circle cx="70" cy="6" r="6.5" fill="#fff" />
   </svg>
