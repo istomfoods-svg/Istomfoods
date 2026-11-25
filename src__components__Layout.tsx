@@ -58,7 +58,8 @@ function Logo({ christmas }: { christmas: boolean }) {
         </span>
       )}
       <span className="leading-tight">
-        <span className="block font-display text-lg font-extrabold text-brand-red">Istom Foods</span>
+        <span className="block font-display text-lg font-extrabold text-[#5A0B16]">Istom Foods</span>
+        <span className="block text-xs text-neutral-500">Feeding the Nation</span>
       </span>
     </Link>
   )
@@ -92,8 +93,7 @@ export default function Layout() {
     `rounded-lg px-3 py-2 font-medium ${isActive ? 'bg-brand-soft text-brand-red' : 'text-neutral-700 hover:text-brand-red'}`
 
   return (
-    <div className="theme-meat flex min-h-screen flex-col">
-      <div className="meat-bg" aria-hidden="true" />
+    <div className="theme-cream flex min-h-screen flex-col">
 
       <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
@@ -106,7 +106,7 @@ export default function Layout() {
               Cart
               {count > 0 && <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-brand-orange text-xs text-white">{count}</span>}
             </Link>
-            <button type="button" className="rounded-xl border border-neutral-300 px-3 py-2 font-bold md:hidden"
+            <button type="button" className="rounded-xl bg-[#5A0B16] px-4 py-2 font-bold text-[#FFF1EA] md:hidden"
               onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-label="Menu">{open ? 'Close' : 'Menu'}</button>
           </div>
         </div>
@@ -142,7 +142,7 @@ export default function Layout() {
         WhatsApp us
       </a>
 
-      <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#1a0508]/90 backdrop-blur md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#5A0B16] md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <ul className="grid grid-cols-5">
           {tabs.map(([to, label, icon]) => (
             <li key={to}>

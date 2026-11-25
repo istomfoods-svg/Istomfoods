@@ -4,8 +4,8 @@
   "description": "Fresh beef and assorted meat delivered to your hostel.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a0508",
-  "theme_color": "#1a0508",
+  "background_color": "#FFF3E6",
+  "theme_color": "#5A0B16",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
