@@ -155,7 +155,7 @@ option { background: #2a0a10; color: #fff1ea; }
 @media (hover: none) { .btn-red:hover { transform: none; } }
 
 /* ===== Cream theme: paper, burgundy, orange, red, green ===== */
-:root { --paper: #FFF3E6; --burg: #5A0B16; --ink: #3A0F14; --mute: #8a5a5f; }
+:root { --paper: #E7DBD5; --burg: #5A0B16; --ink: #3A0F14; --mute: #7A4A50; }
 html, body { background: var(--paper); color: var(--ink); }
 .theme-cream { color: var(--ink); background: var(--paper); }
 .theme-cream h1, .theme-cream h2, .theme-cream h3 { color: var(--burg); }
@@ -165,23 +165,23 @@ html, body { background: var(--paper); color: var(--ink); }
 .theme-cream .text-neutral-600 { color: #6b3a40; }
 .theme-cream .text-neutral-500, .theme-cream .text-neutral-400 { color: var(--mute); }
 .theme-cream .text-brand-red, .theme-cream .hover\:text-brand-red:hover { color: #C8102E; }
-.theme-cream .bg-white { background: #fff; box-shadow: 0 12px 28px -18px rgba(90,11,22,.4); }
-.theme-cream .bg-white\/95 { background: rgba(255,243,230,.95); box-shadow: none; }
-.theme-cream .border-neutral-200, .theme-cream .border-neutral-300, .theme-cream .border-neutral-100, .theme-cream .border-white\/10 { border-color: #EBD3BF; }
-.theme-cream .divide-white\/10 > * + * { border-color: #EBD3BF; }
-.theme-cream .bg-brand-soft { background: #FFE6CF; }
-.theme-cream .bg-neutral-100 { background: #F7E5D3; }
-.theme-cream .bg-neutral-200 { background: #EBD3BF; }
+.theme-cream .bg-white { background: #F3ECE8; box-shadow: 0 12px 28px -18px rgba(90,11,22,.4); }
+.theme-cream .bg-white\/95 { background: rgba(231,219,213,.95); box-shadow: none; }
+.theme-cream .border-neutral-200, .theme-cream .border-neutral-300, .theme-cream .border-neutral-100, .theme-cream .border-white\/10 { border-color: #D5C4BC; }
+.theme-cream .divide-white\/10 > * + * { border-color: #D5C4BC; }
+.theme-cream .bg-brand-soft { background: #EFD3C4; }
+.theme-cream .bg-neutral-100 { background: #E0D2CA; }
+.theme-cream .bg-neutral-200 { background: #D5C4BC; }
 .theme-cream footer.bg-neutral-900 { background: #3A0710; }
-.theme-cream .input { background: #fff; border: 1px solid #E8CDB8; color: var(--ink); }
+.theme-cream .input { background: #F6F0EC; border: 1px solid #CDBBB2; color: var(--ink); }
 .theme-cream .input::placeholder { color: #a98a86; }
-.theme-cream .chip { background: #fff; border-color: #E8CDB8; color: var(--burg); }
+.theme-cream .chip { background: #F3ECE8; border-color: #CDBBB2; color: var(--burg); }
 .theme-cream .btn-red, .theme-cream .chip-on { background-image: linear-gradient(135deg, #F0670F, #D9480F); background-color: #E5560A; border-color: #D9480F; color: #fff; box-shadow: 0 12px 24px -12px rgba(217,72,15,.7), inset 0 1px 0 rgba(255,255,255,.25); }
 .theme-cream .btn-red:hover { background-color: #D9480F; }
 .theme-cream .btn-outline { border-color: var(--burg); color: var(--burg); }
 .theme-cream .btn-outline:hover { background: rgba(90,11,22,.06); }
-.theme-cream .btn-white { background: #fff; color: var(--burg); }
-.theme-cream .shimmer { background: #F0DCCB; }
+.theme-cream .btn-white { background: #F3ECE8; color: var(--burg); }
+.theme-cream .shimmer { background: #DCCCC3; }
 .theme-cream .sec-title::after { background: linear-gradient(90deg, #F0670F, #C8102E); }
 
 /* dark burgundy panels inside the cream site (the 3D cow) */
@@ -227,7 +227,7 @@ html, body { background: var(--paper); color: var(--ink); }
 .ear { transform-origin: center; animation: ew 5s infinite; }
 
 /* ----- home hero (wide band, like the design) ----- */
-.hero2 { position: relative; overflow: hidden; padding: 20px 16px 30px; background: radial-gradient(110% 80% at 100% 0%, #FFD6A8 0%, #FFE7CF 40%, transparent 72%), var(--paper); }
+.hero2 { position: relative; overflow: hidden; padding: 20px 16px 30px; background: radial-gradient(110% 80% at 100% 0%, #F2B98C 0%, #EBCDB8 40%, transparent 72%), var(--paper); }
 .hero2-grid { display: grid; grid-template-columns: 1.14fr .86fr; align-items: center; gap: 4px; max-width: 72rem; margin: 0 auto; }
 .hero2 h1 { font-size: clamp(1.5rem, 6.5vw, 3.2rem); line-height: 1.03; font-weight: 800; letter-spacing: -.02em; color: var(--burg); }
 .hero2 h1 em { display: block; font-style: normal; color: #F0670F; }
@@ -242,7 +242,7 @@ html, body { background: var(--paper); color: var(--ink); }
 @media (min-width: 768px) { .hero2-btns a { padding: .6rem 1.1rem; } .hero2 { padding: 44px 24px 56px; } .hero2-art { height: 400px; } .hero2-photo { height: 350px; } .hero2-mascot { width: 240px; left: -70px; } .hero2-btns a { font-size: .95rem; } }
 
 /* ----- trust strip, Know Your Beef banner, product row ----- */
-.trust { position: relative; z-index: 3; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: #fff; border-radius: 22px; margin: -14px 12px 0; padding: 12px 4px; box-shadow: 0 16px 30px -20px rgba(90,11,22,.5); max-width: 70rem; }
+.trust { position: relative; z-index: 3; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: #F3ECE8; border-radius: 22px; margin: -14px 12px 0; padding: 12px 4px; box-shadow: 0 16px 30px -20px rgba(90,11,22,.5); max-width: 70rem; }
 @media (min-width: 768px) { .trust { margin: -22px auto 0; } }
 .trust div { text-align: center; padding: 0 4px; font-size: .68rem; font-weight: 700; line-height: 1.2; color: var(--burg); }
 .trust svg { display: block; margin: 0 auto 4px; width: 26px; height: 26px; color: #2E9E5B; }
@@ -258,7 +258,7 @@ html, body { background: var(--paper); color: var(--ink); }
 .promo small { display: block; font-size: .65rem; font-weight: 700; opacity: .9; }
 .rail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 6px 16px 14px; margin: 0 -16px; scrollbar-width: none; }
 .rail::-webkit-scrollbar { display: none; }
-.railcard { flex: 0 0 58%; max-width: 15rem; scroll-snap-align: start; background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 14px 26px -16px rgba(90,11,22,.5); }
+.railcard { flex: 0 0 58%; max-width: 15rem; scroll-snap-align: start; background: #F3ECE8; border-radius: 22px; overflow: hidden; box-shadow: 0 14px 26px -16px rgba(90,11,22,.5); }
 .railimg { position: relative; height: 112px; }
 .railbadge { position: absolute; right: 8px; top: 8px; background: #2E9E5B; color: #fff; font-weight: 800; font-size: .65rem; border-radius: 99px; padding: .15rem .55rem; }
 .railinfo { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 10px 12px 12px; }
